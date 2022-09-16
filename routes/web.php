@@ -14,7 +14,9 @@ use App\Http\Controllers\TodolistController;
 |
 */
 
-Route::resource('todolist', TodolistController::class);
+Route::group(['middleware' => 'auth'], function () {
+  Route::resource('todolist', TodolistController::class);
+});
 
 Route::get('/', function () {
     return view('welcome');
