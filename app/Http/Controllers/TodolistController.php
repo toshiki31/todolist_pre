@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Todolist;
 use Auth;
+use App\Models\User;
 
 class TodolistController extends Controller
 {
@@ -121,5 +122,16 @@ class TodolistController extends Controller
     {
         $result = Todolist::find($id)->delete();
         return redirect()->route('todolist.index');
+    }
+
+    public function mydata()
+    {
+        // Userモデルに定義したリレーションを使用してデータを取得する．
+        $todolists = User::query()
+            ->find(Auth::user()->id)
+            ->userTodolists()
+            ->orderBy('created_at','desc')
+            ->get();
+        return view('todolist.index', compact('todolists'));
     }
 }
