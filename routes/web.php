@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TodolistController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,12 @@ use App\Http\Controllers\TodolistController;
 */
 
 Route::group(['middleware' => 'auth'], function () {
+  //いいね
+  Route::post('todolist/{todolist}/favorites', [FavoriteController::class, 'store'])->name('favorites');
+  Route::post('todolist/{todolist}/unfavorites', [FavoriteController::class, 'destroy'])->name('unfavorites');
+  // マイページを表示
+  Route::get('/todolist/mypage', [TodolistController::class, 'mydata'])->name('todolist.mypage');
+  
   Route::resource('todolist', TodolistController::class);
 });
 
